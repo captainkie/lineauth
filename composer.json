@@ -1,0 +1,13 @@
+{
+  "name": "captainkie/lineauth",
+  "description": "line auth api",
+  "license": "MIT",
+  "require": {
+    "php": ">=5.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "LineAuth\\Provider\\": "src/Lineauth/Provider"
+    }
+  }
+}
