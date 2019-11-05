@@ -2,8 +2,6 @@
 
 namespace LineAuth\Provider;
 
-use Symfony\Component\HttpFoundation\Session\Session;
-
 /**
  * Line OAuth2.
  */
@@ -26,25 +24,19 @@ class Line
 			'state_key' => 'line_rand_state_token',
 		];
 
-		private $session;
-
 		public function __construct($config = NULL) {
-			$this->session = new Session();
 			$this->config = $config;
 		}
 
-		public function authenticate($provider = 'Line')
+		public function authenticate($provider = 'Line', $state)
     {		
-			$this->session->set($this->config['state_key'], $this->randomToken());
-			$this->session->get($this->config['state_key']);
-
 			$url = $this->authorizeUrl . http_build_query(
 				[
 					'response_type' => $this->config['response_type'],
 					'client_id' => $this->config['client_id'],
 					'redirect_uri' => $this->config['redirect_uri'],
 					'scope' => $this->scope,
-					'state' => $this->session->get($this->config['state_key'])
+					'state' => $state
 				]
 			);
 			
@@ -150,7 +142,7 @@ class Line
 			}	exit;       
     }
 		
-		private function randomToken($length = 32)
+		public function randomToken($length = 32)
     {
 			if(!isset($length) || intval($length) <= 8 ){
 				$length = 32;
